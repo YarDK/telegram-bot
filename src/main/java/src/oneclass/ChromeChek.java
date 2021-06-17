@@ -1,4 +1,4 @@
-package src.gitdoc;
+package src.oneclass;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -23,18 +23,38 @@ public class ChromeChek {
         ChromeOptions options = new ChromeOptions();
         options.setAcceptInsecureCerts(true);
         wd = new ChromeDriver(options);
-
         wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         wd.get(url);
-        if(netVNalichee().contains("Нет в наличии")) result = "Все еще нет в наличии";
-        else result = "Я бы проверил";
+    }
 
+    public void checker(){
+        String netVNalichee = netVNalichee();
+
+        while (netVNalichee.contains("Нет в наличии")){
+            try{
+                Thread.sleep(60000);
+                wd.navigate().refresh();
+                netVNalichee = netVNalichee();
+                System.out.println("Пока нет =(");
+            } catch (Exception e){
+                e.printStackTrace();
+                return;
+            }
+        }
+
+        if(netVNalichee.contains("Нет в наличии")) result = "Все еще нет в наличии";
+        else result = "Я бы проверил";
     }
 
     public String netVNalichee(){
-        By not_available = By.className("ProductHeader__not-available-header");
-        waitForElementPresent(not_available);
-        return wd.findElement(not_available).getText();
+        try {
+            By not_available = By.className("ProductHeader__not-available-header");
+            waitForElementPresent(not_available);
+            return wd.findElement(not_available).getText();
+        } catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
     }
 
 
