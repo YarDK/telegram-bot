@@ -32,10 +32,10 @@ public class ChromeChek {
 
         while (netVNalichee.contains("Нет в наличии")){
             try{
-                Thread.sleep(60000);
-                wd.navigate().refresh();
+                Thread.sleep(60000 * 30);
                 netVNalichee = netVNalichee();
                 System.out.println("Пока нет =(");
+                wd.navigate().refresh();
             } catch (Exception e){
                 e.printStackTrace();
                 return;
